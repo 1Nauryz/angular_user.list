@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { UserService } from './user-service';
 import { Router } from "@angular/router";
-
+import {ApiService} from "../../api.service";
 
 @Component({
   selector: 'app-user-list',
@@ -9,15 +9,19 @@ import { Router } from "@angular/router";
   styleUrls: ['./user-list-component.component.css']
 })
 export class UserListComponent {
-  users: any[] = [];
 
     constructor(private userService: UserService, private router: Router) {}
 
+  private url : string = "http://localhost:3000/user"
+
   ngOnInit() {
-    this.users = this.userService.getUsers();
+      fetch(this.url)
+  .then((response) => response.json())
+  .then(console.log);
   }
    editUser(index: number) {
     this.router.navigate(['/edit-user', index]);
+
   }
 
 

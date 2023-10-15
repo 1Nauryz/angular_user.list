@@ -11,19 +11,27 @@
 </head>
 <body>
 <div class="container">
+  <div *ngIf="errorMessage" class="alert alert-warning alert-dismissable fade show" role="alert">
+    {{errorMessage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
+  <div *ngIf="successMessage" class="alert alert-success alert-dismissable fade show" role="alert">
+    {{successMessage}}
+    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+  </div>
   <div class="container">
     <form (ngSubmit)="registerUser()" #registrationForm="ngForm">
         <div class="form-group">
           <label for="email">Email address:</label>
-          <input type="email" class="form-control" id="email" name="email" email [(ngModel)]="user.email">
+          <input type="email" class="form-control" id="email" name="email" email [(ngModel)]="user.email" (ngModelChange)="user.email = $event">
         </div>
         <div class="form-group">
           <label for="name">Username:</label>
-          <input type="text" class="form-control" id="name" name="name"  required minlength="3" [(ngModel)]="user.name">
+          <input type="text" class="form-control" id="name" name="name"  required minlength="3" [(ngModel)]="user.name" (ngModelChange)="user.name = $event">
         </div>
        <div class="form-group">
           <label for="password">Password:</label>
-          <input type="password" class="form-control" id="password" name="password"  [(ngModel)]="user.password" required minlength="6">
+          <input type="password" class="form-control" id="password" name="password"  [(ngModel)]="user.password" (ngModelChange)="user.password = $event" required minlength="6">
         </div>
        <div class="form-group" style="margin-top: 15px">
         <button type="submit" class="btn btn-success" [disabled]="!registrationForm.form.valid">Submit</button>

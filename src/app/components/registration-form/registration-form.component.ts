@@ -2,6 +2,7 @@ import {Component, Output, EventEmitter, ViewChild} from '@angular/core';
 import { NgForm } from '@angular/forms';
 import {Router} from "@angular/router";
 import { UserService } from '../user-list/user-service';
+import {ApiService} from "../../api.service";
 
 
 @Component({
@@ -10,13 +11,17 @@ import { UserService } from '../user-list/user-service';
   styleUrls: ['./registration-form.component.css']
 })
 export class RegistrationFormComponent {
+  successMessage:any
+  errorMessage:any
+
   user = {
     name: '',
     email: '',
     password: ''
   };
 
-  constructor(private userService: UserService, private router: Router) {
+
+  constructor(private userService: UserService, private router: Router, private apiservice: ApiService) {
   }
 
 
@@ -28,6 +33,14 @@ export class RegistrationFormComponent {
         console.log(this.user)
         this.userService.addUser(this.user);
         this.router.navigate(['/user-list'])
+        this.apiservice.createUser(this.registrationForm.value).subscribe((res)=>{
+          console.log(res,'User Created in DB')
+          this.registrationForm.reset()
+          this.successMessage = res.message
+        })
+      }
+      else{
+        this.errorMessage="VALIDATION"
       }
   }
 }

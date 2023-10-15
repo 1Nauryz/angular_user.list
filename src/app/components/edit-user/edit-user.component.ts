@@ -17,7 +17,7 @@ export class EditUserComponent implements OnInit {
    const id = this.route.snapshot.paramMap.get('id');
     if (id !== null) {
       this.index = +id;
-      this.user = this.userService.getUsers()[this.index];
+      // this.user = this.userService.getUsers()[this.index];
     } else {}
   }
 

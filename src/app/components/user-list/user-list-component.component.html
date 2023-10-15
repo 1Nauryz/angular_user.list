@@ -4,13 +4,14 @@
     <tr>
       <th scope="col">Name</th>
       <th scope="col">Email</th>
-      <th scope="col">Detail</th>
+      <th scope="col">Password</th>
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let user of users;let i = index">
+    <tr *ngFor="let user of users | async;let i = index">
       <td>{{user.name}}</td>
       <td>{{user.email}}</td>
+      <td>{{user.password}}</td>
       <td>
         <button class="btn btn-primary" (click)="editUser(i)">Edit</button>
       </td>

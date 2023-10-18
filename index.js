@@ -76,6 +76,22 @@ app.post('/students', async (req, res) => {
     res.status(500).json({ error: 'Student add error' });
   }
 });
+app.delete('/students/:studentId', async (req, res) => {
+    try {
+        const studentId = req.params.studentId;
+        const deletedStudent = await Student.findByIdAndRemove(studentId);
+
+        if (!deletedStudent) {
+            return res.status(404).json({ error: 'Student not found' });
+        }
+
+        res.json({ message: 'Student deleted' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Student delete ERROR' });
+    }
+});
+
 const User = require('./models/user');
 
 app.get('/user', async (req, res) => {
@@ -100,21 +116,47 @@ app.post('/user', async (req, res) => {
   }
 });
 
+app.delete('/user/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    console.log('User ID to delete:', userId);
+    const deletedUser = await User.findByIdAndRemove(userId);
 
-app.delete('/students/:studentId', async (req, res) => {
-    try {
-        const studentId = req.params.studentId;
-        const deletedStudent = await Student.findByIdAndRemove(studentId);
-
-        if (!deletedStudent) {
-            return res.status(404).json({ error: 'Student not found' });
-        }
-
-        res.json({ message: 'Student deleted' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Student delete ERROR' });
+    if (!deletedUser) {
+      console.log('User not found for deletion:', userId);
+      return res.status(404).json({ error: 'User not found' });
     }
+
+    console.log('User deleted successfully:', userId);
+    res.json({ message: 'User deleted' });
+  } catch (error) {
+    console.error('Error deleting user:', error);
+    res.status(500).json({ error: 'User delete error' });
+  }
+});
+
+app.put('/user/:userId', async (req, res) => {
+  try {
+    const userId = req.params.userId;
+    const { name, email, password } = req.body;
+
+    const user = await User.findById(userId);
+
+    if (!user) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    user.name = name;
+    user.email = email;
+    user.password = password;
+
+    const updatedUser = await user.save();
+
+    res.json(updatedUser);
+  } catch (error) {
+    console.error('Error updating user:', error);
+    res.status(500).json({ error: 'User update error' });
+  }
 });
 
 

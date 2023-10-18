@@ -18,26 +18,13 @@ export class UserService {
       );
     }
   }
-getUsersFromDB(): Observable<any[]> {
-  console.log('DATA FROM DB');
-  return this.apiService.getAllData().pipe(
-    catchError((error) => {
-      console.error('Error fetching data: ', error);
-      return [];
-    })
-  );
-}
 
-  // getUsersFromDB() {
-  //   console.log('DATA FROM DB');
-  //   console.log(this.apiService.getAllData())
-  //   this.users = this.apiService.getAllData();
-  // }
-   getUsers(): Observable<any[]> | undefined {
+  getUsers(): Observable<any[]> | undefined {
     return this.users;
   }
 
   editUser(index: number, newUserDetails: any) {
     console.log('Temporary edit method without updating the list');
   }
+
 }

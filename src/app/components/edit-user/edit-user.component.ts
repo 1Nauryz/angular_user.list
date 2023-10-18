@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { UserService } from '../user-list/user-service';
+import { ApiService } from '../../api.service';
 
 @Component({
   selector: 'app-edit-user',
@@ -8,21 +8,35 @@ import { UserService } from '../user-list/user-service';
   styleUrls: ['./edit-user.component.css']
 })
 export class EditUserComponent implements OnInit {
-  user: any;
-  index: number = -1;
+  user: any = {};
+  userId: string;
+  error: string = '';
 
-  constructor(private userService: UserService, private route: ActivatedRoute, private router: Router) {}
-
-  ngOnInit() {
-   const id = this.route.snapshot.paramMap.get('id');
-    if (id !== null) {
-      this.index = +id;
-      // this.user = this.userService.getUsers()[this.index];
-    } else {}
+  constructor(private route: ActivatedRoute, private router: Router, private apiService: ApiService) {
+    this.userId = this.route.snapshot.params['id'];
   }
 
-  saveChanges() {
-    this.userService.editUser(this.index, this.user);
-    this.router.navigate(['/user-list']);
+  ngOnInit() {
+    this.apiService.getUser(this.userId).subscribe(
+      (data) => {
+        this.user = data;
+      },
+      (error) => {
+        this.error = 'Ayan Gay';
+      }
+    );
+  }
+
+  onSubmit() {
+    this.apiService.updateUser(this.userId, this.user).subscribe(
+      (updatedUser) => {
+        // Update the user data on the client-side if needed
+        this.user = updatedUser;
+        this.router.navigate(['/user-list']);
+      },
+      (error) => {
+        this.error = 'Error updating user: ' + error.message;
+      }
+    );
   }
 }

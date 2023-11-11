@@ -30,11 +30,10 @@ export class ApiService {
     const url = `${this.apiUrl}/${userId}`;
     return this._http.put(url, newUserDetails);
   }
+
   updateUser(userId: string, userData: any): Observable<any> {
     const url = `${this.apiUrl}/${userId}`;
     return this._http.put(url, userData);
   }
-
-
 
 }
